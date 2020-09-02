@@ -36,6 +36,16 @@ def getData(platform, player):
     data = requests.get(url, headers=header)
     return data.json()
 
+def getsessData(platform, player):
+    url = f"https://api.tracker.gg/api/v2/rocket-league/standard/profile/{platform}/{player}/sessions?"
+    header = {
+        "accept": "application/json, text/plain, */*",
+        "accept-language": "en",
+        "referrer": "https://rocketleague.tracker.network/rocket-league/live",
+        "referrerPolicy": "no-referrer-when-downgrade"
+    }
+    data = requests.get(url, headers=header)
+    return data.json()
 
 @bot.event
 async def on_message(message):
@@ -279,5 +289,61 @@ async def on_message(message):
         embed.set_footer(text="e:)")
 
         await channel.send(embed=embed)
+    #---------------------------------------------------------------------------------------#
+    if message.content.startswith(prefix + "feed"):
+        hh = message.content.split('!feed')
+        h = hh[1].split(' ')
+        platform = h[0]
+        player = h[1]
+        livedata = getData(platform, player)
+        avatar = livedata['data']['platformInfo']['avatarUrl']
+        livedata = getsessData(platform, player)
 
-bot.run('NzEwMzYxNzg5NjQwMDgxNDE5.XrzXRQ.DVBHczbegMLkUjRCf6kiKHJTqY4', bot=False)
+        result1 = livedata['data']['items'][0]['matches'][0]['metadata']['result']
+        playlist1 = livedata['data']['items'][0]['matches'][0]['metadata']['playlist']
+        MMR1 = livedata['data']['items'][0]['matches'][0]['stats']['rating']['displayValue']
+        delta1 = livedata['data']['items'][0]['matches'][0]['stats']['rating']['metadata']['ratingDelta']
+        tier1 = livedata['data']['items'][0]['matches'][0]['stats']['rating']['metadata']['tier']
+        div1 = livedata['data']['items'][0]['matches'][0]['stats']['rating']['metadata']['division']
+
+        result2 = livedata['data']['items'][0]['matches'][1]['metadata']['result']
+        playlist2 = livedata['data']['items'][0]['matches'][1]['metadata']['playlist']
+        MMR2 = livedata['data']['items'][0]['matches'][1]['stats']['rating']['displayValue']
+        delta2 = livedata['data']['items'][0]['matches'][1]['stats']['rating']['metadata']['ratingDelta']
+        tier2 = livedata['data']['items'][0]['matches'][1]['stats']['rating']['metadata']['tier']
+        div2 = livedata['data']['items'][0]['matches'][1]['stats']['rating']['metadata']['division']
+
+        result3 = livedata['data']['items'][0]['matches'][2]['metadata']['result']
+        playlist3 = livedata['data']['items'][0]['matches'][2]['metadata']['playlist']
+        MMR3 = livedata['data']['items'][0]['matches'][2]['stats']['rating']['displayValue']
+        delta3 = livedata['data']['items'][0]['matches'][2]['stats']['rating']['metadata']['ratingDelta']
+        tier3 = livedata['data']['items'][0]['matches'][2]['stats']['rating']['metadata']['tier']
+        div3 = livedata['data']['items'][0]['matches'][2]['stats']['rating']['metadata']['division']
+
+        result4 = livedata['data']['items'][0]['matches'][3]['metadata']['result']
+        playlist4 = livedata['data']['items'][0]['matches'][3]['metadata']['playlist']
+        MMR4 = livedata['data']['items'][0]['matches'][3]['stats']['rating']['displayValue']
+        delta4 = livedata['data']['items'][0]['matches'][3]['stats']['rating']['metadata']['ratingDelta']
+        tier4 = livedata['data']['items'][0]['matches'][3]['stats']['rating']['metadata']['tier']
+        div4 = livedata['data']['items'][0]['matches'][3]['stats']['rating']['metadata']['division']
+
+        result5 = livedata['data']['items'][0]['matches'][4]['metadata']['result']
+        playlist5 = livedata['data']['items'][0]['matches'][4]['metadata']['playlist']
+        MMR5 = livedata['data']['items'][0]['matches'][4]['stats']['rating']['displayValue']
+        delta5 = livedata['data']['items'][0]['matches'][4]['stats']['rating']['metadata']['ratingDelta']
+        tier5 = livedata['data']['items'][0]['matches'][4]['stats']['rating']['metadata']['tier']
+        div5 = livedata['data']['items'][0]['matches'][4]['stats']['rating']['metadata']['division']
+
+        embed=discord.Embed(title=f"{player}'s feed", color=0x021ff7)
+        embed.set_author(name="RLBot")
+        embed.set_thumbnail(url=avatar)
+        embed.add_field(name=f"**{result1}**", value=f"{tier1 + ' ' + div1} \n{playlist1} \n{'MMR: ' + str(MMR1) } \n{'Change: ' + str(delta1)}\n ", inline=False)
+        embed.add_field(name=f"**{result2}**", value=f"{tier2 + ' ' + div2} \n{playlist2} \n{'MMR: ' + str(MMR2) } \n{'Change: ' + str(delta2)}\n ", inline=False)
+        embed.add_field(name=f"**{result3}**", value=f"{tier3 + ' ' + div3} \n{playlist3} \n{'MMR: ' + str(MMR3) } \n{'Change: ' + str(delta3)}\n ", inline=False)
+        embed.add_field(name=f"**{result4}**", value=f"{tier4 + ' ' + div4} \n{playlist4} \n{'MMR: ' + str(MMR4) } \n{'Change: ' + str(delta4)}\n ", inline=False)
+        embed.add_field(name=f"**{result5}**", value=f"{tier5 + ' ' + div5} \n{playlist5} \n{'MMR: ' + str(MMR5) } \n{'Change: ' + str(delta5)}\n ", inline=False)
+        embed.set_footer(text="e:)")
+
+        await ctx.send(embed=embed)
+
+bot.run('NzEwMzYxNzg5NjQwMDgxNDE5.X0lonQ.1jiKdT-4528R9PojuCHoEAoCpo8', bot=False)
