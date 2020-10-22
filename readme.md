@@ -6,7 +6,13 @@ it uses Tracker.gg (http://rocketleague.tracker.network/) unofficial api
 
 updated to tournaments update
 
+if you dont know how to run a discord bot in python at this point you shouldnt be downloading this.
+
+
 https://i.imgur.com/1x460sM.png
+
+
+
 
 !Rank Command:
 !Rank Steam {Steam ID}
